@@ -18,9 +18,9 @@ function del() {
 
 function done() {
     if (!$(this).prop('checked')) {
-        $(this).parent().parent().children().children('span').css('textDecoration', 'none');
+        $(this).parent().siblings().children('span').css('textDecoration', 'none');
     } else {
-        $(this).parent().parent().children().children('span').css('textDecoration', 'line-through');
+        $(this).parent().siblings().children('span').css('textDecoration', 'line-through');
     }
 }
 

@@ -10,8 +10,8 @@
   //有登入
     $username = $_SESSION["loginUser"];
     $query_User = "SELECT `nickname`,`username`,`permission` FROM `user` WHERE `username`='".$username."'";
-    $User = mysql_query($query_User);
-    $row_User = mysql_fetch_assoc($User);
+    $User = mysqli_query($conn, $query_User);
+    $row_User = mysqli_fetch_assoc($User);
     $username = $row_User["username"];
     $nickname = $row_User["nickname"];
     //帳號等級為 member
@@ -30,9 +30,9 @@
   if(isset($_POST["username"]) && isset($_POST["password"])){   
     //繫結登入會員資料
     $query_RecLogin = "SELECT * FROM `user` WHERE `username`='".$_POST["username"]."'";
-    $RecLogin = mysql_query($query_RecLogin);   
+    $RecLogin = mysqli_query($conn, $query_RecLogin);   
     //取出帳號密碼的值
-    $row_RecLogin = mysql_fetch_assoc($RecLogin);
+    $row_RecLogin = mysqli_fetch_assoc($RecLogin);
     //比對密碼，若登入成功則呈現登入狀態
     if( md5($_POST["password"]) == $row_RecLogin["password"] ){
       //設定登入者的名稱及等級
@@ -82,11 +82,11 @@
   //加上限制顯示筆數的SQL敘述句，由本頁開始記錄筆數開始，每頁顯示預設筆數
   $query_limit_RecComment = $query_RecComment." LIMIT ".$startRow_records.", ".$pageRow_records;
   //以加上限制顯示筆數的SQL敘述句查詢資料到 $RecComment 中
-  $RecComment = mysql_query($query_limit_RecComment);
+  $RecComment = mysqli_query($conn, $query_limit_RecComment);
   //以未加上限制顯示筆數的SQL敘述句查詢資料到 $all_RecComment 中
-  $all_RecComment = mysql_query($query_RecComment);
+  $all_RecComment = mysqli_query($conn, $query_RecComment);
   //計算總筆數
-  $total_records = mysql_num_rows($all_RecComment);
+  $total_records = mysqli_num_rows($all_RecComment);
   //計算總頁數=(總筆數/每頁筆數)後無條件進位。
   $total_pages = ceil($total_records/$pageRow_records);
   if ($total_pages==0) {
@@ -201,10 +201,12 @@
           </p>
         </div>
         <div class=col-md-4 style="padding-top: 40px;">
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-success"><h4 align="center">留言板需要註冊帳號並登入後才能留言</h4></li>
-            <li class="list-group-item list-group-item-danger"><h4 align="center">訪客只能瀏覽留言</h4></li>
-          </ul>
+          <?php if( $lv === "guest" ){ ?>
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-success"><h4 align="center">留言板需要註冊帳號並登入後才能留言</h4></li>
+              <li class="list-group-item list-group-item-danger"><h4 align="center">訪客只能瀏覽留言</h4></li>
+            </ul>
+          <?php } ?>
         </div>
         <div class=col-md-4></div>
       </div>
@@ -212,7 +214,7 @@
   </div>
   <div class=container>
   <?php $colcounter=3;
-  while($row_RecComment=mysql_fetch_assoc($RecComment)){ ?>
+  while($row_RecComment=mysqli_fetch_assoc($RecComment)){ ?>
     <?php if($colcounter==3){
       $colcounter=0;?>
       <div class=row>

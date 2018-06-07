@@ -9,13 +9,13 @@
     /* 顯示目前留言 */
     $username = $_SESSION["loginUser"];
     $query_RecComment = "SELECT * FROM `comment` WHERE `id`=".$_GET["id"];
-    $RecComment = mysql_query($query_RecComment);
-    $row_RecComment = mysql_fetch_assoc($RecComment);
+    $RecComment = mysqli_query($conn, $query_RecComment);
+    $row_RecComment = mysqli_fetch_assoc($RecComment);
 
     /* 提取 user_id & permission */
     $query_RecUser = "SELECT `id`,`permission` FROM `user` WHERE `username`='".$username."'";
-    $RecUser = mysql_query($query_RecUser);
-    $row_RecUser = mysql_fetch_assoc($RecUser);
+    $RecUser = mysqli_query($conn, $query_RecUser);
+    $row_RecUser = mysqli_fetch_assoc($RecUser);
 
     // 確認此留言是否登入者的留言
     if( $row_RecUser["permission"] != "admin" && $row_RecComment["user_id"] != $row_RecUser["id"] ){ ?>
@@ -27,14 +27,14 @@
     }
     
     $query_RecNickname = "SELECT `nickname` FROM `user` WHERE `user`.`id` = ".$row_RecComment["user_id"];
-    if(!$RecNickname=mysql_query($query_RecNickname)){ ?>
+    if(!$RecNickname=mysqli_query($conn, $query_RecNickname)){ ?>
     <script type="text/javascript">
       window.alert("該留言不存在!\n將被轉移至首頁!");
       window.location.assign("index.php");
     </script>
 <?php
     }
-    $row_RecNickname = mysql_fetch_assoc($RecNickname);
+    $row_RecNickname = mysqli_fetch_assoc($RecNickname);
   }else{
     //尚未登入，轉到登入畫面 ?>
     <script type="text/javascript">
@@ -54,7 +54,7 @@
 <?php 
     }else{
     $sql_query = "DELETE FROM `comment` WHERE `id`=".$_POST["id"];  
-    mysql_query($sql_query);
+    mysqli_query($conn, $sql_query);
   //重新導向回到主畫面 ?>
     <script type="text/javascript">
       window.alert("刪除留言成功!");

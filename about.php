@@ -9,8 +9,8 @@
   //有登入
     $username = $_SESSION["loginUser"];
     $query_RecUser = "SELECT `nickname`,`permission` FROM `user` WHERE `username`='".$username."'";
-    $RecUser = mysql_query($query_RecUser);
-    $row_RecUser = mysql_fetch_assoc($RecUser);
+    $RecUser = mysqli_query($conn, $query_RecUser);
+    $row_RecUser = mysqli_fetch_assoc($RecUser);
     $nickname = $row_RecUser["nickname"];
     //帳號等級為 member
     if($row_RecUser["permission"]=="member"){
@@ -28,9 +28,9 @@
   if(isset($_POST["username"]) && isset($_POST["password"])){   
     //繫結登入會員資料
     $query_RecLogin = "SELECT * FROM `user` WHERE `username`='".$_POST["username"]."'";
-    $RecLogin = mysql_query($query_RecLogin);   
+    $RecLogin = mysqli_query($conn, $query_RecLogin);   
     //取出帳號密碼的值
-    $row_RecLogin=mysql_fetch_assoc($RecLogin);
+    $row_RecLogin=mysqli_fetch_assoc($RecLogin);
     $username = $row_RecLogin["username"];
     //比對密碼，若登入成功則呈現登入狀態
     if(md5($_POST["password"])==$row_RecLogin["password"]){
@@ -132,8 +132,8 @@
         <?php }else{ ?>
           <form class="navbar-form navbar-right" role="form">
             <font color="white">歡迎， <?php echo $nickname; ?> さん　
-            <a class="btn btn-info" href="update.php" role=button>設定</a>
-            <a class="btn btn-danger" href="?logout=true" role=button>登出</a></font>
+            <a class="btn btn-info" href="update.php" role="button">設定</a>
+            <a class="btn btn-danger" href="?logout=true" role="button">登出</a></font>
           </form>
         <?php } ?>
       </div>
@@ -151,14 +151,14 @@
         <div class="panel panel-default gray" align="center">
           <h2><img src="/images/icon-bootstrap.png" style="width: 50px; height: 50px; "> Bootstrap 3</h2>
           <p>本站所使用的 CSS Framework</p>
-          <p><a class="btn btn-default" href="https://kkbruce.tw/bs3" role=button>前往 &raquo;</a></p>
+          <p><a class="btn btn-default" href="https://getbootstrap.com/docs/3.3/" target="_blank" role="button">前往 &raquo;</a></p>
         </div>
       </div>
       <div class=col-md-6>
         <div class="panel panel-default"  align="center">
           <h2><img src="/images/icon-typekit.png" style="width: 50px; height: 50px; "> Adobe Typekit</h2>
           <p>本站所使用的套用字體服務</p>
-          <p><a class="btn btn-default" href="https://typekit.com" role=button>前往 &raquo;</a></p>
+          <p><a class="btn btn-default" href="https://typekit.com" target="_blank" role="button">前往 &raquo;</a></p>
         </div>
       </div>
       <!--div class=col-md-4>

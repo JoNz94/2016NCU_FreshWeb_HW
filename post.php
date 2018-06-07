@@ -8,8 +8,8 @@
   if(isset($_SESSION["loginUser"]) && ($_SESSION["loginUser"]!="")){
     //已經登入，提取 uid
     $query_RecUser = "SELECT `id`, `nickname` FROM `user` WHERE `username`='".$_SESSION["loginUser"]."'";
-    $RecUser=mysql_query($query_RecUser);
-    $row_RecUser=mysql_fetch_assoc($RecUser);
+    $RecUser=mysqli_query($conn, $query_RecUser);
+    $row_RecUser=mysqli_fetch_assoc($RecUser);
     $nickname = $row_RecUser["nickname"];
   }else{
     //尚未登入，轉到登入畫面 ?>
@@ -23,7 +23,6 @@
 <!--新增留言-->
 <?php
   if(isset($_POST["action"])&&($_POST["action"]=="add")){
-                            // true || mysql_query('DELETE FROM `comment` WHERE `id`= 1') || 'add';  
     require_once("xss_protect.php");
     $Real_subject = xss_protect($_POST["subject"]);
     $Real_content = xss_protect($_POST["content"]);
@@ -32,7 +31,7 @@
     $query_insert .= "'".$Real_subject."',";
     $query_insert .= "NOW(),";
     $query_insert .= "'".$Real_content."')";
-    mysql_query($query_insert);
+    mysqli_query($conn, $query_insert);
     //重新導向回到主畫面 ?>
     <script type="text/javascript">
       window.alert("留言成功!");

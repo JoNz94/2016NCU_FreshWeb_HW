@@ -8,8 +8,8 @@
   if(isset($_SESSION["loginUser"]) && ($_SESSION["loginUser"]!="")){
     //已經登入，載入會員資料
     $query_RecUser = "SELECT * FROM `user` WHERE `username`='".$_SESSION["loginUser"]."'";
-    $RecUser = mysql_query($query_RecUser); 
-    $row_RecUser = mysql_fetch_assoc($RecUser);
+    $RecUser = mysqli_query($conn, $query_RecUser); 
+    $row_RecUser = mysqli_fetch_assoc($RecUser);
   }else{
     //尚未登入，轉到登入畫面
 ?>
@@ -30,7 +30,7 @@
     $query_update .= "`sex`='".$_POST["sex"]."',";
     $query_update .= "`email`='".$_POST["email"]."' ";
     $query_update .= "WHERE `id`=".$row_RecUser["id"];  
-    mysql_query($query_update);
+    mysqli_query($conn, $query_update);
 
     //若有修改密碼，則登出回到首頁。
     if(($_POST["password"]!="")&&($_POST["password"]==$_POST["passwordrecheck"])){

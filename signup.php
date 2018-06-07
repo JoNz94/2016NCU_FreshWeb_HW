@@ -22,12 +22,12 @@ require_once("connMysql.php");
 if(isset($_POST["action"])&&($_POST["action"]=="join")){
   //找尋帳號是否已經註冊
   $query_RecFindUser = "SELECT `username` FROM `user` WHERE `username`='".$_POST["username"]."'";
-  $RecFindUser=mysql_query($query_RecFindUser);
+  $RecFindUser=mysqli_query($conn, $query_RecFindUser);
   $query_RecFindEmail = "SELECT `email` FROM `user` WHERE `email`='".$_POST["email"]."'";
-  $RecFindEmail=mysql_query($query_RecFindEmail);
-  if (mysql_num_rows($RecFindUser)>0){
+  $RecFindEmail=mysqli_query($conn, $query_RecFindEmail);
+  if (mysqli_num_rows($RecFindUser)>0){
     header("Location: signup.php?errMsg=1&username=".$_POST["username"]);
-  }elseif(mysql_num_rows($RecFindEmail)>0){
+  }elseif(mysqli_num_rows($RecFindEmail)>0){
     header("Location: signup.php?errMsg=2&email=".$_POST["email"]);
   }else{
   //若帳號可用，執行新增的動作  
@@ -37,7 +37,7 @@ if(isset($_POST["action"])&&($_POST["action"]=="join")){
     $query_insert .= "'".md5($_POST["password"])."',";
     $query_insert .= "'".$_POST["u_sex"]."',";
     $query_insert .= "'".$_POST["email"]."')";
-    mysql_query($query_insert);
+    mysqli_query($conn, $query_insert);
     $_SESSION["loginUser"]=$_POST["username"];
     ?>
     <script type="text/javascript">

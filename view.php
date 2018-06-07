@@ -10,8 +10,8 @@
   //有登入
     $username = $_SESSION["loginUser"];
     $query_RecUser = "SELECT `nickname`, `permission` FROM `user` WHERE `username`='".$username."'";
-    $RecUser = mysql_query($query_RecUser);
-    $row_RecUser = mysql_fetch_assoc($RecUser);
+    $RecUser = mysqli_query($conn, $query_RecUser);
+    $row_RecUser = mysqli_fetch_assoc($RecUser);
     $nickname = $row_RecUser["nickname"];
     //帳號等級為 member
     if($row_RecUser["permission"]=="member"){
@@ -29,9 +29,9 @@
   if(isset($_POST["username"]) && isset($_POST["password"])){   
     //繫結登入會員資料
     $query_Login = "SELECT * FROM `user` WHERE `username`='".$_POST["username"]."'";
-    $Login = mysql_query($query_Login);   
+    $Login = mysqli_query($conn, $query_Login);   
     //取出帳號密碼的值
-    $row_Login=mysql_fetch_assoc($Login);
+    $row_Login=mysqli_fetch_assoc($Login);
     $username = $row_Login["username"];
     $password = $row_Login["password"];
     //比對密碼，若登入成功則呈現登入狀態
@@ -79,8 +79,8 @@
   }
 
   $query_RecComment = "SELECT `comment`.*, `user`.`nickname`, `user`.`username`, `user`.`sex` FROM `comment`,`user` WHERE `comment`.`id`='".$id."' AND `comment`.`user_id`=`user`.`id`";
-  $RecComment = mysql_query($query_RecComment);
-  if(!$row_RecComment=mysql_fetch_assoc($RecComment)){ ?>
+  $RecComment = mysqli_query($conn, $query_RecComment);
+  if(!$row_RecComment=mysqli_fetch_assoc($RecComment)){ ?>
     <script type="text/javascript">
       window.alert("該留言不存在!\n將被轉移至首頁!");
       window.location.assign("index.php");

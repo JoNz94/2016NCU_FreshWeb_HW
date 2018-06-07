@@ -1,21 +1,7 @@
 <?php
-function xss_protect($str){
-  $new = "";
-  for( $i=0 ; $i < strlen($str) ; $i++ ){
-    if( $str[$i] == " "){
-    	$new .= '&nbsp;';
-    }elseif( $str[$i] == "<" ){
-    	$new .= '&lt;';
-    }elseif( $str[$i] == ">" ){
-    	$new .= '&gt;';
-    }elseif( $str[$i] == "'" ){
-    	$new .= '&apos;';
-    }elseif( $str[$i] == '"' ){
-    	$new .= '&quot;';
-    }else{
-    	$new .= $str[$i];
-    }
+  function xss_protect($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
   }
-  return $new;
-}
-?>
